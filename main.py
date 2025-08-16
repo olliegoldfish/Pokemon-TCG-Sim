@@ -8,12 +8,14 @@ RestClient.configure('0dd20c22-80be-4f00-96da-2cd99be624d0')
 
 images = []
 
+
 def get_Image(numcards):
     for i in range(1, 2):
         card = Card.find(f'sv10-{i}')
         card_image = requests.get(card.images.small)
         img = Image.open(BytesIO(card_image.content))
-        images.append(img)  
+        images.append(img)
+
 
 set = Set.find('sv10')
 get_Image(set.printedTotal)
@@ -33,5 +35,3 @@ for idx, tk_img in enumerate(tk_images):
     label.grid(row=row, column=col, padx=5, pady=5)
 
 root.mainloop()
-
-
