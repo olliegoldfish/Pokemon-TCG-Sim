@@ -11,7 +11,7 @@ RestClient.configure(api_key)
 images = []
 
 
-def get_Image(numcards: int) -> Image:
+def get_Image():
     for i in range(1, 2):
         card = Card.find(f'sv10-{i}')
         card_image = requests.get(card.images.small)
@@ -19,8 +19,12 @@ def get_Image(numcards: int) -> Image:
         return img
 
 
+'''
 set = Set.find('sv10')
 images.append(get_Image(set.printedTotal))
+'''
+get_Image()
+
 
 # Create a Tkinter window to display the images
 root = tk.Tk()
