@@ -3,8 +3,10 @@ from PIL import Image, ImageTk
 import requests
 from io import BytesIO
 import tkinter as tk
+import os
 
-RestClient.configure('0dd20c22-80be-4f00-96da-2cd99be624d0')
+api_key = os.getenv('POKEMON_TCG_API_KEY')
+RestClient.configure(api_key)
 
 images = []
 
