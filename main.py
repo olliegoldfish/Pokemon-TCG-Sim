@@ -23,7 +23,7 @@ def get_Image():
 set = Set.find('sv10')
 images.append(get_Image(set.printedTotal))
 '''
-get_Image()
+images.append(get_Image())
 
 
 # Create a Tkinter window to display the images
