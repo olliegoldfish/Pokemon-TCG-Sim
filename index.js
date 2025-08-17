@@ -21,16 +21,6 @@ function createImages(data) {
     })
 }
 
-async function getCard() {
-    await fetch('http://localhost:8888/cards/en/xyp.json')
-        .then(response => response.text())
-        .then(data => {
-            createImages(JSON.parse(data));
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-}
 
 async function createSelect() {
     await fetch('http://localhost:8888/sets/en.json')
