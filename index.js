@@ -22,6 +22,20 @@ function createImages(data) {
     })
 }
 
+BLACKLIST = [
+    "McDonald's Collection 2011",
+    "McDonald's Collection 2012",
+    "McDonald's Collection 2013",
+    "McDonald's Collection 2014",
+    "McDonald's Collection 2015",
+    "McDonald's Collection 2016",
+    "McDonald's Collection 2017",
+    "McDonald's Collection 2018",
+    "McDonald's Collection 2019",
+    "McDonald's Collection 2020",
+    "McDonald's Collection 2021",
+    "McDonald's Collection 2022"
+]
 
 async function createSelect() {
     await fetch('http://localhost:8888/sets/en.json')
@@ -29,6 +43,9 @@ async function createSelect() {
         .then(data => {
             const sets = JSON.parse(data);
             sets.forEach(set => {
+                if (BLACKLIST.includes(set.name)) {
+                    return; // Skip blacklisted sets
+                }
                 const option = document.createElement('option');
                 option.value = set.id;
                 option.textContent = set.name;
