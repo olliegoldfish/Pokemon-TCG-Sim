@@ -2,17 +2,22 @@ const output = document.getElementById('output');
 const select = document.getElementById('select');
 const openPack = document.getElementById('open-pack');
 
-function createImage(imageLink) {
+function createImage(imageLink, rarity) {
+    const div = document.createElement('div');
+    const rarityP = document.createElement('p');
     const img = document.createElement('img');
     img.src = imageLink;
     img.alt = 'Card Image';
-    img.class = 'card-image';
-    output.appendChild(img);
+    div.classList.add('card-image')
+    rarityP.textContent = 'Rarity: ' + rarity;
+    div.appendChild(img);
+    div.appendChild(rarityP);
+    output.appendChild(div);
 }
 
 function createImages(data) {
     data.forEach(card => {
-        createImage(card.images.small)
+        createImage(card.images.small, card.rarity)
     })
 }
 
@@ -49,6 +54,7 @@ createSelect();
 select.addEventListener('change', async () => {
     output.innerHTML = ''; // Clear previous images    
 })
+
 
 openPack.addEventListener('click', async () => {
     const selectedSet = select.value;
