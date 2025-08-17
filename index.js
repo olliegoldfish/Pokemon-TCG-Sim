@@ -67,6 +67,51 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
+function generatePack(cardRarity, cards) {
+    const pulledCards = []
+    // Get commons
+    for (let i = 0; i < 4; i++) {
+        pulledCards.push(cardRarity["Common"][getRandomInt(0, cardRarity["Common"].length - 1)]);
+    }
+    // Get uncommons
+    for (let i = 0; i < 3; i++) {
+        pulledCards.push(cardRarity["Uncommon"][getRandomInt(0, cardRarity["Uncommon"].length - 1)]);
+    }
+    // Get rare
+    pulledCards.push(cardRarity["Rare"][getRandomInt(0, cardRarity["Rare"].length - 1)]);
+    // Get rare or holo
+    const holos = cardRarity["Rare"].concat(cardRarity["Rare Holo"], cardRarity["Rare Holo EX"], cardRarity["Rare Holo GX"]);
+    pulledCards.push(holos[getRandomInt(0, holos.length - 1)]);
+    // Get rare or secret/rainbow
+    const secret = cardRarity["Rare Holo"].concat(cardRarity["Rare Ultra"], cardRarity["Rare Rainbow"], cardRarity["Rare Secret"]);
+    pulledCards.push(secret[getRandomInt(0, secret.length - 1)]);
+
+    // Get images
+    pulledCards.forEach(cardId => {
+        const card = cards.find(c => c.id === cardId);
+        if (card) {
+            createImage(card.images.small, card.rarity);
+        } else {
+            console.error(`Card with ID ${cardId} not found.`);
+        }
+    })
+}
+
+function generatePromoPack(cardRarity, cards) {
+    const promoCards = [];
+    for (let i = 0; i < 5; i++) {
+        promoCards.push(cardRarity["Promo"][getRandomInt(0, cardRarity["Promo"].length - 1)]);
+    }
+    promoCards.forEach(card => {
+        const promoCard = cards.find(c => c.id === card);
+        if (promoCard) {
+            createImage(promoCard.images.small, "Promo");
+        } else {
+            console.error(`Promo card with ID ${card} not found.`);
+        }
+    })
+}
+
 function pullPack() {
     output.innerHTML = '';
     const selectedSet = select.value;
@@ -74,6 +119,7 @@ function pullPack() {
         .then(response => response.text())
         .then(data => {
             const cardRarity = {
+                "Promo": [],
                 "Common": [],
                 "Uncommon": [],
                 "Rare": [],
@@ -96,33 +142,11 @@ function pullPack() {
                 }
             })
 
-            const pulledCards = []
-            // Get commons
-            for (let i = 0; i < 4; i++) {
-                pulledCards.push(cardRarity["Common"][getRandomInt(0, cardRarity["Common"].length - 1)]);
+            if (cardRarity["Promo"].length > 0) {
+                generatePromoPack(cardRarity, cards);
+            } else {
+                generatePack(cardRarity, cards);
             }
-            // Get uncommons
-            for (let i = 0; i < 3; i++) {
-                pulledCards.push(cardRarity["Uncommon"][getRandomInt(0, cardRarity["Uncommon"].length - 1)]);
-            }
-            // Get rare
-            pulledCards.push(cardRarity["Rare"][getRandomInt(0, cardRarity["Rare"].length - 1)]);
-            // Get rare or holo
-            const holos = cardRarity["Rare"].concat(cardRarity["Rare Holo"], cardRarity["Rare Holo EX"], cardRarity["Rare Holo GX"]);
-            pulledCards.push(holos[getRandomInt(0, holos.length - 1)]);
-            // Get rare or secret/rainbow
-            const secret = cardRarity["Rare Holo"].concat(cardRarity["Rare Ultra"], cardRarity["Rare Rainbow"], cardRarity["Rare Secret"]);
-            pulledCards.push(secret[getRandomInt(0, secret.length - 1)]);
-
-            // Get images
-            pulledCards.forEach(cardId => {
-                const card = cards.find(c => c.id === cardId);
-                if (card) {
-                    createImage(card.images.small, card.rarity);
-                } else {
-                    console.error(`Card with ID ${cardId} not found.`);
-                }
-            })
         })
         .catch(error => {
             console.error('Error fetching data:', error);
