@@ -63,6 +63,18 @@ select.addEventListener('change', async () => {
     output.innerHTML = ''; // Clear previous images    
 })
 
+
+function displayCards(cardIds, cards) {
+    cardIds.forEach(cardId => {
+        const card = cards.find(c => c.id === cardId);
+        if (card) {
+            createImage(card.images.small, card.rarity);
+        } else {
+            console.error(`Card with ID ${cardId} not found.`);
+        }
+    })
+}
+
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
@@ -87,14 +99,7 @@ function generatePack(cardRarity, cards) {
     pulledCards.push(secret[getRandomInt(0, secret.length - 1)]);
 
     // Get images
-    pulledCards.forEach(cardId => {
-        const card = cards.find(c => c.id === cardId);
-        if (card) {
-            createImage(card.images.small, card.rarity);
-        } else {
-            console.error(`Card with ID ${cardId} not found.`);
-        }
-    })
+    displayCards(pulledCards, cards);
 }
 
 function generatePromoPack(cardRarity, cards) {
@@ -102,14 +107,7 @@ function generatePromoPack(cardRarity, cards) {
     for (let i = 0; i < 5; i++) {
         promoCards.push(cardRarity["Promo"][getRandomInt(0, cardRarity["Promo"].length - 1)]);
     }
-    promoCards.forEach(card => {
-        const promoCard = cards.find(c => c.id === card);
-        if (promoCard) {
-            createImage(promoCard.images.small, "Promo");
-        } else {
-            console.error(`Promo card with ID ${card} not found.`);
-        }
-    })
+    displayCards(promoCards, cards);
 }
 
 function pullPack() {
