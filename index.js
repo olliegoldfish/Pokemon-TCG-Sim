@@ -79,28 +79,50 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-function chooseCard9Rarity() {
-    const randomNum = getRandomInt(0, 100);
-    if (randomNum <= 45) {
-        return "Rare";
-    } else if (randomNum <= 75) {
-        return "Rare Holo";
-    } else {
-        return "Rare Holo +";
+function chooseCard9Rarity(cardRarity) {
+    let attempts = 0;
+    while (attempts < 1000) {
+        attempts++;
+        let to_return = "";
+        const randomNum = getRandomInt(0, 100);
+        if (randomNum <= 45) {
+            to_return = "Rare";
+        } else if (randomNum <= 75) {
+            to_return = "Rare Holo";
+        } else {
+            to_return = "Rare Holo +";
+        }
+        if (to_return === "Rare Holo +") {
+            if (["Rare Holo EX", "Rare Holo GX", "Rare Holo V"].some(rarity => cardRarity[rarity].length > 0)) {
+                return to_return;
+            }
+        } else if (cardRarity[to_return].length > 0) {
+            return to_return;
+        }
     }
+    throw new Error("Could not find a valid rarity for card 9 after 1000 attempts");
 }
 
-function chooseCard10Rarity() {
-    const randomNum = getRandomInt(0, 100);
-    if (randomNum <= 75) {
-        return "Rare Holo";
-    } else if (randomNum <= 97) {
-        return "Rare Ultra";
-    } else if (randomNum <= 99) {
-        return "Rare Rainbow";
-    } else if (randomNum === 100) {
-        return "Rare Secret";
+function chooseCard10Rarity(cardRarity) {
+    let attempts = 0;
+    while (attempts < 1000) {
+        attempts++;
+        let to_return = "";
+        const randomNum = getRandomInt(0, 100);
+        if (randomNum <= 75) {
+            to_return = "Rare Holo";
+        } else if (randomNum <= 97) {
+            to_return = "Rare Ultra";
+        } else if (randomNum <= 99) {
+            to_return = "Rare Rainbow";
+        } else if (randomNum === 100) {
+            to_return = "Rare Secret";
+        }
+        if (cardRarity[to_return].length > 0) {
+            return to_return;
+        }
     }
+    throw new Error("Could not find a valid rarity for card 10 after 1000 attempts");
 }
 
 function generatePack(cardRarity, cards) {
@@ -116,7 +138,7 @@ function generatePack(cardRarity, cards) {
     // Get rare
     pulledCards.push(cardRarity["Rare"][getRandomInt(0, cardRarity["Rare"].length - 1)]);
     // Get rare or holo
-    const card9Rarity = chooseCard9Rarity();
+    const card9Rarity = chooseCard9Rarity(cardRarity);
     if (card9Rarity === "Rare Holo +") {
         let added = false;
         ["Rare Holo EX", "Rare Holo GX", "Rare Holo V"].forEach(rarity => {
@@ -130,7 +152,8 @@ function generatePack(cardRarity, cards) {
         pulledCards.push(cardRarity[card9Rarity][getRandomInt(0, cardRarity[card9Rarity].length - 1)]);
     }
     // Get rare or secret/rainbow
-    const card10Rarity = chooseCard10Rarity();
+    const card10Rarity = chooseCard10Rarity(cardRarity);
+    if (cardRarity[card10Rarity].length === 0) throw new Error(`No cards of rarity ${card10Rarity} found`);
     pulledCards.push(cardRarity[card10Rarity][getRandomInt(0, cardRarity[card10Rarity].length - 1)]);
 
     // Get images
