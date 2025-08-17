@@ -2,7 +2,7 @@
 
 Pokemon TCG Sim
 
-Each booster pack contains 10 game cards: 4 commons, 3 uncommons, and 1 Rare and 2 Rare Holos
+Each booster pack contains 10 game cards: 4 commons, 3 uncommons, 1 Rare, 1 Rare or Rare Ultra or Rainbow Or Rare Holos or Rare Holo EX/GX, 1 Rare Holo or Rare Rainbow or Rare Secret 
 
 "Rare Secret" = Gold Cards
 "Rare Rainbow" = Rainbow Cards
