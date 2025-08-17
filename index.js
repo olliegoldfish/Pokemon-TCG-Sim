@@ -1,6 +1,6 @@
 const output = document.getElementById('output');
 const select = document.getElementById('select');
-
+const openPack = document.getElementById('open-pack');
 
 function createImage(imageLink) {
     const img = document.createElement('img');
@@ -47,14 +47,17 @@ async function createSelect() {
 createSelect();
 
 select.addEventListener('change', async () => {
-    output.innerHTML = ''; // Clear previous images
-    const selectedSet = select.value;
-    await fetch(`http://localhost:8888/cards/en/${selectedSet}.json`)
-        .then(response => response.text())
-        .then(data => {
-            createImages(JSON.parse(data));
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
+    output.innerHTML = ''; // Clear previous images    
 })
+
+openPack.addEventListener('click', async () => {
+    const selectedSet = select.value;
+        await fetch(`http://localhost:8888/cards/en/${selectedSet}.json`)
+            .then(response => response.text())
+            .then(data => {
+                createImages(JSON.parse(data));
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+});
