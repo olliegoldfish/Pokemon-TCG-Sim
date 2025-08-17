@@ -79,6 +79,30 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
+function chooseCard9Rarity() {
+    const randomNum = getRandomInt(0, 100);
+    if (randomNum <= 45) {
+        return "Rare";
+    } else if (randomNum <= 75) {
+        return "Rare Holo";
+    } else {
+        return "Rare Holo +";
+    }
+}
+
+function chooseCard10Rarity() {
+    const randomNum = getRandomInt(0, 100);
+    if (randomNum <= 75) {
+        return "Rare Holo";
+    } else if (randomNum <= 97) {
+        return "Rare Ultra";
+    } else if (randomNum <= 99) {
+        return "Rare Rainbow";
+    } else if (randomNum === 100) {
+        return "Rare Secret";
+    }
+}
+
 function generatePack(cardRarity, cards) {
     const pulledCards = []
     // Get commons
@@ -92,11 +116,22 @@ function generatePack(cardRarity, cards) {
     // Get rare
     pulledCards.push(cardRarity["Rare"][getRandomInt(0, cardRarity["Rare"].length - 1)]);
     // Get rare or holo
-    const holos = cardRarity["Rare"].concat(cardRarity["Rare Holo"], cardRarity["Rare Holo EX"], cardRarity["Rare Holo GX"]);
-    pulledCards.push(holos[getRandomInt(0, holos.length - 1)]);
+    const card9Rarity = chooseCard9Rarity();
+    if (card9Rarity === "Rare Holo +") {
+        let added = false;
+        ["Rare Holo EX", "Rare Holo GX", "Rare Holo V"].forEach(rarity => {
+            if (cardRarity[rarity].length > 0) {
+                if (added) throw new Error(`Multiple of EX, GX and V exist`); // Only add one of these rarities
+                pulledCards.push(cardRarity[rarity][getRandomInt(0, cardRarity[rarity].length - 1)]);
+                added = true;
+            }
+        })
+    } else {
+        pulledCards.push(cardRarity[card9Rarity][getRandomInt(0, cardRarity[card9Rarity].length - 1)]);
+    }
     // Get rare or secret/rainbow
-    const secret = cardRarity["Rare Holo"].concat(cardRarity["Rare Ultra"], cardRarity["Rare Rainbow"], cardRarity["Rare Secret"]);
-    pulledCards.push(secret[getRandomInt(0, secret.length - 1)]);
+    const card10Rarity = chooseCard10Rarity();
+    pulledCards.push(cardRarity[card10Rarity][getRandomInt(0, cardRarity[card10Rarity].length - 1)]);
 
     // Get images
     displayCards(pulledCards, cards);
@@ -124,6 +159,7 @@ function pullPack() {
                 "Rare Holo": [],
                 "Rare Holo EX": [],
                 "Rare Holo GX": [],
+                "Rare Holo V": [],
                 "Rare Ultra": [],
                 "Rare Rainbow": [],
                 "Rare Secret": []
