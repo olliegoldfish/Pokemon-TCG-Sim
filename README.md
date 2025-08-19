@@ -18,13 +18,19 @@ Each booster pack contains 10 game cards: 4 commons, 3 uncommons, 1 Rare, 1 Rare
 
 45% Rare
 30% Rare Holo
+
 25% Rare Holo EX
 25% Rare Holo GX
 25% Rare Holo V
+25% Rare Holo LV.X
 
 ## Card 10
 
-75% Rare Holo
-22% Rare Ultra
+71% Rare Holo
+
+21% Ultra Rare
+21% Rare Ultra
+
+2% Special Illustration Rare
 2% Rare Rainbow
 1% Rare Secret
