@@ -1,3 +1,5 @@
+import { DELAY_BETWEEN_CARDS } from './constants.js';
+
 const output = document.getElementById('output');
 const select = document.getElementById('select');
 const openPack = document.getElementById('open-pack');
@@ -22,7 +24,7 @@ function createImages(data) {
     })
 }
 
-BLACKLIST = [
+const BLACKLIST = [
     "McDonald's Collection 2011",
     "McDonald's Collection 2012",
     "McDonald's Collection 2013",
@@ -73,7 +75,7 @@ function displayCards(cardIds, cards) {
         } else {
             console.error(`Card with ID ${cardId} not found.`);
         }
-        delay += 300; // Increment delay for each card
+        delay += DELAY_BETWEEN_CARDS; // Increment delay for each card
     })
 }
 

@@ -1,0 +1,1 @@
+export const DELAY_BETWEEN_CARDS = 500; // 500 milliseconds
