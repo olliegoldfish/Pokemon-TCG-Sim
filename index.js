@@ -15,11 +15,12 @@ function createImage(imageLink, rarity) {
     output.appendChild(div);
 }
 
+
 // Only used for testing purposes
 function createImages(data) {
     data.forEach(card => {
-        createImage(card.images.small, card.rarity)
-    })
+        createImage(card.images.small, card.rarity);
+    })    
 }
 
 BLACKLIST = [
@@ -34,7 +35,13 @@ BLACKLIST = [
     "McDonald's Collection 2019",
     "McDonald's Collection 2020",
     "McDonald's Collection 2021",
-    "McDonald's Collection 2022"
+    "McDonald's Collection 2022",
+    "Southern Islands",
+    "EX Trainer Kit Latias",
+    "EX Trainer Kit Latios",
+    "Ex Trainer Kit 2 Plusle",
+    "Ex Trainer Kit 2 Minun",
+    "Pokémon Rumble",
 ]
 
 async function createSelect() {
@@ -185,7 +192,35 @@ function pullPack() {
                 "Rare Holo V": [],
                 "Rare Ultra": [],
                 "Rare Rainbow": [],
-                "Rare Secret": []
+                "Rare Secret": [],
+                // New
+                "Rare Shining": [],
+                "Rare Secret": [],
+                "Rare Holo Star": [],
+                "Rare Holo LV.X": [],
+                "Rare Prime": [],
+                "LEGEND": [],
+                "Rare ACE": [],
+                "Classic Collection": [],
+                "Double Rare": [],
+                "Illustration Rare": [],
+                "Ultra Rare": [],
+                "Special Illustration Rare": [],
+                "Black White Rare": [],
+                "Rare Prism Star": [],
+                "Rare Shiny": [],
+                "Rare Shiny GX": [],
+                "Hyper Rare": [],
+                "Shiny Rare": [],
+                "Shiny Ultra Rare": [],
+                "ACE SPEC Rare": [],
+                "Trainer Gallery Rare Holo": [],
+                "Amazing Rare": [],
+                "Rare BREAK": [],
+                "Rare Holo VMAX": [],
+                "Radiant Rare": [],
+                "Rare Holo VSTAR": []
+
             }
             const cards = JSON.parse(data);
             cards.forEach(card => {
@@ -215,7 +250,7 @@ openPack.addEventListener('click', async () => {
         await fetch(`http://localhost:8888/cards/en/${selectedSet}.json`)
             .then(response => response.text())
             .then(data => {
-                pullPack();
+                createImages(JSON.parse(data));
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
