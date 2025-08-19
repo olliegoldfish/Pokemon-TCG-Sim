@@ -65,13 +65,15 @@ select.addEventListener('change', async () => {
 
 
 function displayCards(cardIds, cards) {
+    let delay = 0;
     cardIds.forEach(cardId => {
         const card = cards.find(c => c.id === cardId);
         if (card) {
-            createImage(card.images.small, card.rarity);
+            setTimeout(() => createImage(card.images.small, card.rarity), delay);
         } else {
             console.error(`Card with ID ${cardId} not found.`);
         }
+        delay += 300; // Increment delay for each card
     })
 }
 
