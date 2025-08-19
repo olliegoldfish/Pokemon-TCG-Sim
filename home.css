@@ -1,0 +1,14 @@
+#header {
+    display: grid;
+    place-content: center;
+    height: 100vh;
+}
+
+#header a {
+    width: fit-content;
+}
+
+#begin-button {
+    display: grid;
+    place-content: center;
+}
