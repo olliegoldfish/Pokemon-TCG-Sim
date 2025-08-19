@@ -51,6 +51,13 @@ const BLACKLIST = [
     "Ex Trainer Kit 2 Plusle",
     "Ex Trainer Kit 2 Minun",
     "Pokémon Rumble",
+    "Hidden Fates Shiny Vault",
+    "Shining Fates Shiny Vault",
+    "Brilliant Stars Trainer Gallery",
+    "Astral Radiance Trainer Gallery",
+    "Silver Tempest Trainer Gallery",
+    "Lost Origin Trainer Gallery",
+    "Crown Zenith Galarian Gallery"
 ]
 
 async function createSelect() {
@@ -105,13 +112,19 @@ function chooseCard9Rarity(cardRarity) {
         const randomNum = getRandomInt(0, 100);
         if (randomNum <= 45) {
             to_return = "Rare";
+        } else if (randomNum <= 55 && cardRarity["Rare ACE"].length > 0) {
+            to_return = "Rare ACE";
+        } else if (randomNum <= 65 && cardRarity["Rare Prism Star"].length > 0) {
+            to_return = "Rare Prism Star";
         } else if (randomNum <= 75) {
             to_return = "Rare Holo";
+        } else if (randomNum <= 85 && cardRarity["ACE SPEC Rare"].length > 0) {
+            to_return = "ACE SPEC Rare";
         } else {
             to_return = "Rare Holo +";
         }
         if (to_return === "Rare Holo +") {
-            if (["Rare Holo EX", "Rare Holo GX", "Rare Holo V"].some(rarity => cardRarity[rarity].length > 0)) {
+            if (RARE_HOLO_PLUS.some(rarity => cardRarity[rarity].length > 0)) {
                 return to_return;
             }
         } else if (cardRarity[to_return].length > 0) {
@@ -129,14 +142,30 @@ function chooseCard10Rarity(cardRarity) {
         const randomNum = getRandomInt(0, 100);
         if (randomNum <= 75) {
             to_return = "Rare Holo";
-        } else if (randomNum <= 97) {
-            to_return = "Rare Ultra";
+        } else if (randomNum <= 86 && cardRarity["Illustration Rare"].length > 0) {
+            to_return = "Illustration Rare";
+        } else if (randomNum <= 96) {
+            to_return = "Rare Ultra or Ultra Rare";
+        } else if (randomNum <= 98) {
+            to_return = "Rare Rainbow Equivalent";
         } else if (randomNum <= 99) {
-            to_return = "Rare Rainbow";
+            to_return = "Rare Secret Equivalent";
         } else if (randomNum === 100) {
-            to_return = "Rare Secret";
+            to_return = "Special Illustration Rare";
         }
-        if (cardRarity[to_return].length > 0) {
+        if (to_return === "Rare Ultra or Ultra Rare") {
+            if (RARE_ULTRA_ULTRA_RARE.some(rarity => cardRarity[rarity].length > 0)) {
+                return to_return;
+            }
+        } else if (to_return === "Rare Secret Equivalent") {
+            if (RARE_SECRET_EQUIVALENT.some(rarity => cardRarity[rarity].length > 0)) {
+                return to_return;
+            }
+        } else if (to_return === "Rare Rainbow Equivalent") {
+            if (RARE_RAINBOW_EQUIVALENT.some(rarity => cardRarity[rarity].length > 0)) {
+                return to_return;
+            }
+        } else if (cardRarity[to_return].length > 0) {
             return to_return;
         }
     }
@@ -159,32 +188,68 @@ function generatePack(cardRarity, cards) {
     const card9Rarity = chooseCard9Rarity(cardRarity);
     if (card9Rarity === "Rare Holo +") {
         let added = false;
-        ["Rare Holo EX", "Rare Holo GX", "Rare Holo V"].forEach(rarity => {
+        RARE_HOLO_PLUS.forEach(rarity => {
             if (cardRarity[rarity].length > 0) {
-                if (added) throw new Error(`Multiple of EX, GX and V exist`); // Only add one of these rarities
+                if (added) throw new Error(`Multiple of EX, GX, V, LV.X, VMAX, VSTAR exist`); // Only add one of these rarities
                 pulledCards.push(cardRarity[rarity][getRandomInt(0, cardRarity[rarity].length - 1)]);
                 added = true;
             }
         })
+    } else if (card9Rarity === "Rare") {
+        const rare = cardRarity["Rare"].concat(cardRarity["Amazing Rare"], cardRarity["Radiant Rare"]);
+        pulledCards.push(rare[getRandomInt(0, rare.length - 1)])
     } else {
         pulledCards.push(cardRarity[card9Rarity][getRandomInt(0, cardRarity[card9Rarity].length - 1)]);
     }
     // Get rare or secret/rainbow
     const card10Rarity = chooseCard10Rarity(cardRarity);
-    if (cardRarity[card10Rarity].length === 0) throw new Error(`No cards of rarity ${card10Rarity} found`);
-    pulledCards.push(cardRarity[card10Rarity][getRandomInt(0, cardRarity[card10Rarity].length - 1)]);
+    if (card10Rarity === "Rare Ultra or Ultra Rare") {
+        let added = false;
+        RARE_ULTRA_ULTRA_RARE.forEach(rarity => {
+            if (cardRarity[rarity].length > 0) {
+                if (added) throw new Error(`Multiple of Ultra Rare, Rare Ultra exist`); // Only add one of these rarities
+                pulledCards.push(cardRarity[rarity][getRandomInt(0, cardRarity[rarity].length - 1)]);
+                added = true;
+            }
+        })
+    } else if (card10Rarity === "Rare Secret Equivalent") {
+        let added = false;
+        RARE_SECRET_EQUIVALENT.forEach(rarity => {
+            if (cardRarity[rarity].length > 0) {
+                if (added) throw new Error(`Multiple of Rare Secret Equivalent exist`); // Only add one of these rarities
+                pulledCards.push(cardRarity[rarity][getRandomInt(0, cardRarity[rarity].length - 1)]);
+                added = true;
+            }
+        })
+    } else if (card10Rarity === "Rare Rainbow Equivalent") {
+        let added = false;
+        RARE_RAINBOW_EQUIVALENT.forEach(rarity => {
+            if (cardRarity[rarity].length > 0) {
+                if (added) throw new Error(`Multiple of Rare Rainbow Equivalent exist`); // Only add one of these rarities
+                pulledCards.push(cardRarity[rarity][getRandomInt(0, cardRarity[rarity].length - 1)]);
+                added = true;
+            }
+        })
+    } else{
+        pulledCards.push(cardRarity[card10Rarity][getRandomInt(0, cardRarity[card10Rarity].length - 1)]);
+    }
 
     // Get images
     displayCards(pulledCards, cards);
 }
 
-function generatePromoPack(cardRarity, cards) {
+function generatePromoPack(cardRarity, cards, rarity = "Promo") {
     const promoCards = [];
     for (let i = 0; i < 5; i++) {
-        promoCards.push(cardRarity["Promo"][getRandomInt(0, cardRarity["Promo"].length - 1)]);
+        promoCards.push(cardRarity[rarity][getRandomInt(0, cardRarity[rarity].length - 1)]);
     }
     displayCards(promoCards, cards);
 }
+
+const RARE_HOLO_PLUS = ["Rare Holo EX", "Rare Holo GX", "Rare Holo V", "Rare Holo LV.X", "Rare Holo VMAX", "Rare Holo VSTAR", "Rare Prime", "Double Rare"];
+const RARE_ULTRA_ULTRA_RARE = ["Rare Ultra", "Ultra Rare", "Rare Holo Star", "LEGEND", "Rare Shining"];
+const RARE_SECRET_EQUIVALENT = ["Rare Secret", "Hyper Rare", "Black White Rare"];
+const RARE_RAINBOW_EQUIVALENT = ["Rare Rainbow", "Shiny Rare", "Shiny Ultra Rare", "Rare BREAK"]
 
 function pullPack() {
     output.innerHTML = '';
@@ -204,34 +269,28 @@ function pullPack() {
                 "Rare Ultra": [],
                 "Rare Rainbow": [],
                 "Rare Secret": [],
-                // New
-                "Rare Shining": [],
-                "Rare Secret": [],
-                "Rare Holo Star": [],
                 "Rare Holo LV.X": [],
+                "Rare Holo VMAX": [],
+                "Rare Holo VSTAR": [],
+                "Special Illustration Rare": [],
+                "Rare Holo Star": [],
                 "Rare Prime": [],
                 "LEGEND": [],
-                "Rare ACE": [],
-                "Classic Collection": [],
+                "Rare Shining": [],
                 "Double Rare": [],
+                "Classic Collection": [],
                 "Illustration Rare": [],
+                "Rare ACE": [],
                 "Ultra Rare": [],
-                "Special Illustration Rare": [],
                 "Black White Rare": [],
-                "Rare Prism Star": [],
-                "Rare Shiny": [],
-                "Rare Shiny GX": [],
                 "Hyper Rare": [],
+                "Rare Prism Star": [],
                 "Shiny Rare": [],
                 "Shiny Ultra Rare": [],
                 "ACE SPEC Rare": [],
-                "Trainer Gallery Rare Holo": [],
                 "Amazing Rare": [],
                 "Rare BREAK": [],
-                "Rare Holo VMAX": [],
                 "Radiant Rare": [],
-                "Rare Holo VSTAR": []
-
             }
             const cards = JSON.parse(data);
             cards.forEach(card => {
@@ -247,6 +306,8 @@ function pullPack() {
 
             if (cardRarity["Promo"].length > 0) {
                 generatePromoPack(cardRarity, cards);
+            } else if (cardRarity["Classic Collection"].length > 0) {
+                generatePromoPack(cardRarity, cards, "Classic Collection");
             } else {
                 generatePack(cardRarity, cards);
             }
@@ -261,7 +322,8 @@ openPack.addEventListener('click', async () => {
         await fetch(`http://localhost:8888/cards/en/${selectedSet}.json`)
             .then(response => response.text())
             .then(data => {
-                createImages(JSON.parse(data));
+                // createImages(JSON.parse(data));
+                pullPack();
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
