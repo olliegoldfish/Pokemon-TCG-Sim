@@ -1,4 +1,9 @@
+html {
+    --fade-in-duration: 0.0s;
+}
+
 .card-image {
+    transition: var(--fade-in-duration) 0.3s ease-in-out;
     width: 240;
 }
 

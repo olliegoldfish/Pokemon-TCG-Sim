@@ -1,8 +1,11 @@
-import { DELAY_BETWEEN_CARDS } from './constants.js';
+import CONSTANTS from './constants.js';
 
 const output = document.getElementById('output');
 const select = document.getElementById('select');
 const openPack = document.getElementById('open-pack');
+
+// Set html variables
+document.getElementsByTagName('html')[0].style.setProperty('--fade-in-duration', CONSTANTS.FADE_IN_DURATION);
 
 function createImage(imageLink, rarity) {
     const div = document.createElement('div');
@@ -15,6 +18,10 @@ function createImage(imageLink, rarity) {
     div.appendChild(img);
     div.appendChild(rarityP);
     output.appendChild(div);
+    div.style.opacity = '0'; // Start with opacity 0 for fade-in effect \
+    img.onload = () => {
+        div.style.opacity = '1'; // Fade in the image once it has loaded
+    }
 }
 
 // Only used for testing purposes
@@ -75,7 +82,7 @@ function displayCards(cardIds, cards) {
         } else {
             console.error(`Card with ID ${cardId} not found.`);
         }
-        delay += DELAY_BETWEEN_CARDS; // Increment delay for each card
+        delay += CONSTANTS.DELAY_BETWEEN_CARDS; // Increment delay for each card
     })
 }
 
