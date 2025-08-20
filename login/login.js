@@ -23,7 +23,7 @@ jsonBtn.addEventListener("click", function(){
     .then(response => {
         if (response.ok) {
             localStorage.setItem("username", username.value);
-            window.location.href = "open-pack.html";
+            window.location.href = "/open-pack/open-pack.html";
 
         } else {
             throw new Error("Network response was not ok");
