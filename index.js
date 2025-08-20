@@ -322,7 +322,7 @@ openPack.addEventListener('click', async () => {
         await fetch(`http://localhost:8888/cards/en/${selectedSet}.json`)
             .then(response => response.text())
             .then(data => {
-                // createImages(JSON.parse(data));
+                //createImages(JSON.parse(data));
                 pullPack();
             })
             .catch(error => {
