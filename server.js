@@ -58,6 +58,8 @@ http.createServer(function(request, response) {
     // Parse the request URL to get the file path
     var uri = url.parse(request.url).pathname,
         filename = path.join(process.cwd(), uri);
+    // If the request is for a directory, serve index.html (ie if request is "/")
+    if (fs.statSync(filename).isDirectory()) filename += 'home/home.html';
 
     // If file doesn't exist, return 404
     if (!fs.existsSync(filename)) {
