@@ -20,7 +20,7 @@ http.createServer(function(request, response) {
   }
 
   // If the request is for a directory, serve index.html (ie if request is "/")
-  if (fs.statSync(filename).isDirectory()) filename += '/home.html';
+  if (fs.statSync(filename).isDirectory()) filename += 'home/home.html';
 
 
   fs.readFile(filename, "binary", function(err, file) {
