@@ -20,7 +20,14 @@ function createImage(imageLink, rarity) {
     output.appendChild(div);
     div.style.opacity = '0'; // Start with opacity 0 for fade-in effect \
     img.onload = () => {
-        div.style.opacity = '1'; // Fade in the image once it has loaded
+        requestAnimationFrame(() => {
+            div.style.opacity = '1'; // Fade in the image once it has loaded
+        });
+    };
+    if (img.complete) {
+        requestAnimationFrame(() => {
+            div.style.opacity = '1'; // Fade in the image once it has loaded
+        });
     }
 }
 
