@@ -7,6 +7,12 @@ var http = require("http"),
 // Create server
 http.createServer(function(request, response) {
 
+  if (request.url === "/favicon.ico") {
+  response.writeHead(204); // No Content
+  response.end();
+  return;
+  }
+
   // Login Request
   if (request.method === "POST") {
     if (request.url === "/post/login") {
